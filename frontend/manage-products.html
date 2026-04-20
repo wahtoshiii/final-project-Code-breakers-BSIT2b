@@ -1,0 +1,46 @@
+<div class="modal fade" id="addProductModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form action="#" method="POST">
+          <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            <input type="text" name="product_name" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Price (₱)</label>
+              <input type="number" name="price" class="form-control" step="0.01" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Stock Quantity</label>
+              <input type="number" name="stock" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select name="product_category" class="form-select">
+              <option value="Food">Food</option>
+              <option value="Beverage">Beverage</option>
+              <option value="Supplies">Supplies</option>
+              <option value="Service">Service</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100">Save Product</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
