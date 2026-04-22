@@ -1,0 +1,43 @@
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Incoming Orders</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Buyer</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-2026-001</td>
+                            <td>John Doe</td>
+                            <td>₱250.00</td>
+                            <td><span class="badge bg-warning text-dark">Pending</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-success">Confirm</button>
+                                <button class="btn btn-sm btn-danger">Cancel</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2026-002</td>
+                            <td>Jane Smith</td>
+                            <td>₱120.00</td>
+                            <td><span class="badge bg-info">Confirmed</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-secondary" disabled>Done</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
