@@ -20,4 +20,4 @@ document.getElementById('registerForm').addEventListener('submit', async functio
   } else {
     alert(`Error: ${data.message || 'Registration failed'}`);
   }
-});
+}); 
