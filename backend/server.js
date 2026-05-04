@@ -10,28 +10,27 @@ const authRoutes = require('./routes/auth');
 const app = express();
 connectDB();
 
-const path = require('path');
-
-// 1. Static folder setup
-const frontendPath = path.join(__dirname, '..', 'frontend');
-app.use(express.static(frontendPath));
-
-// 2. Specific route for the landing page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'login.html'));
-});
-
-// 3. UPDATED Catch-all route (The fix for your specific error)
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'login.html'));
-});
-
 app.use(cors());
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
+
+// backend/server.js
+
+const _frontend = path.join(__dirname, '..', 'frontend');
+app.use(express.static(_frontend));
+
+// API Routes here
+app.use('/api/auth', require('./routes/auth'));
+
+// THE FINAL FIX: 
+// This matches any route that does NOT start with /api 
+// and sends it to your login page.
+app.get(/^\/(?!api).*/, (req, res) => {
+    res.sendFile(path.join(_frontend, 'login.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 
