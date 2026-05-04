@@ -1,92 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Service Hub – Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dashboard - Campus Hub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/auth.css">
 </head>
-<body class="bg-light">
+<body class="app-bg pb-5 mb-5">
+    
+    <!-- Top Header -->
+    <header class="app-header text-white p-3 shadow-sm fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
+            
+            <!-- Left Side: Logo and Title -->
+            <a href="dashboard.html" class="d-flex align-items-center text-decoration-none text-white nav-trigger" data-target="dashboard.html">
+                <div class="logo-box me-3 fs-5" style="width: 45px; height: 45px;">CH</div>
+                <div>
+                    <h5 class="mb-0 fw-bold">Campus Hub</h5>
+                    <small class="text-white-50" style="font-size: 0.75rem;">BUP Student Guide</small>
+                </div>
+            </a>
 
-    <div class="container py-4">
-        <h2 class="mb-4">Campus Service Hub</h2>
+            <!-- Right Side: Profile Icon -->
+            <a href="profile.html" class="text-white text-decoration-none nav-trigger" data-target="profile.html">
+                <i class="bi bi-person-circle fs-3"></i>
+            </a>
 
-        <!-- Search Bar (Task 4) -->
-        <div class="mb-4">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search by name..." />
         </div>
+    </header>
 
-        <!-- Orders Table (Main Display) -->
-        <div class="card shadow-sm mb-5">
-            <div class="card-header bg-white">
-                <h5 class="mb-0">Incoming Orders</h5>
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 100px;">
+        <h3 class="fw-bold mb-1" style="color: #2c3e50;">Welcome to Campus Hub!</h3>
+        <p class="text-muted mb-4 small">Your all-in-one guide to navigate and explore BUP campus</p>
+        
+        <!-- Top Stats Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-6">
+                <div class="card bg-orange-light border-0 h-100 p-3 p-md-4 shadow-sm rounded-4 text-start">
+                    <h5 class="fw-bold text-dark mb-1">50+</h5>
+                    <p class="mb-0 text-dark small fw-medium">Campus Location</p>
+                </div>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Buyer</th>
-                                <th>Total Amount</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orderList">
-                            <!-- JS will inject orders here -->
-                        </tbody>
-                    </table>
+            <div class="col-6">
+                <div class="card bg-blue-light border-0 h-100 p-3 p-md-4 shadow-sm rounded-4 text-start">
+                    <h5 class="fw-bold text-dark mb-1">100+</h5>
+                    <p class="mb-0 text-dark small fw-medium">Students Products</p>
                 </div>
             </div>
         </div>
 
-        <!-- Users Section -->
-        <section class="mb-5">
-            <h4 class="mb-3">Users</h4>
-            <div id="userList" class="row g-3">
-                <!-- JS will inject user cards here -->
-            </div>
-        </section>
+        <!-- Menu Action Cards -->
+        <div class="d-flex flex-column gap-3 mb-4">
+            
+            <a href="map.html" class="card border-0 rounded-4 shadow-sm text-decoration-none action-card">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="icon-circle bg-muted-brown text-white me-3"><i class="bi bi-map"></i></div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0 fw-bold text-dark">Interactive Campus Map</h6>
+                        <small class="text-muted" style="font-size: 0.75rem;">Navigate buildings, offices, and shops with real-time directions</small>
+                    </div>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </div>
+            </a>
 
-        <!-- Products Section -->
-        <section class="mb-5">
-            <h4 class="mb-3">Products</h4>
-            <div id="productList" class="row g-3">
-                <!-- JS will inject product cards here -->
-            </div>
-        </section>
-    </div>
+            <a href="chat.html" class="card border-0 rounded-4 shadow-sm text-decoration-none action-card">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="icon-circle bg-muted-brown text-white me-3"><i class="bi bi-chat-dots"></i></div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0 fw-bold text-dark">AI Campus Assistant</h6>
+                        <small class="text-muted" style="font-size: 0.75rem;">Get instant answers about campus life, requirements, and FAQs</small>
+                    </div>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </div>
+            </a>
 
-    <!-- Scripts -->
+            <a href="manage-products.html" class="card border-0 rounded-4 shadow-sm text-decoration-none action-card">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="icon-circle bg-orange text-white me-3"><i class="bi bi-bag"></i></div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0 fw-bold text-dark">Student Marketplace</h6>
+                        <small class="text-muted" style="font-size: 0.75rem;">Order products from fellow Entrep students</small>
+                    </div>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </div>
+            </a>
+
+            <a href="explore.html" class="card border-0 rounded-4 shadow-sm text-decoration-none action-card">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="icon-circle bg-yellow-orange text-white me-3"><i class="bi bi-building"></i></div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0 fw-bold text-dark">Establishment Walkthrough</h6>
+                        <small class="text-muted" style="font-size: 0.75rem;">Preview campus facilities before you visit</small>
+                    </div>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Green Systems Online Banner -->
+        <div class="card border-0 rounded-4 shadow-sm mb-4 bg-vibrant-green">
+            <div class="card-body p-3 d-flex align-items-center text-white">
+                <div class="status-dot-container me-3">
+                    <div class="status-dot"></div>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold">All Systems Online</h6>
+                    <small style="color: rgba(255,255,255,0.85); font-size: 0.75rem;">Campus facilities and services are running smoothly</small>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav fixed-bottom bg-white border-top shadow-lg d-flex justify-content-around align-items-center pb-2 pt-2 px-1">
+        <a href="dashboard.html" class="nav-item active"><i class="bi bi-stars fs-5 d-block"></i><span>Home</span></a>
+        <a href="maps.html" class="nav-item"><i class="bi bi-map fs-5 d-block"></i><span>Map</span></a>
+        <a href="chat.html" class="nav-item"><i class="bi bi-chat fs-5 d-block"></i><span>Chat</span></a>
+        <a href="manage-products.html" class="nav-item"><i class="bi bi-bag fs-5 d-block"></i><span>Market</span></a>
+        <a href="explore.html" class="nav-item"><i class="bi bi-building fs-5 d-block"></i><span>Explore</span></a>
+    </nav>
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/dashboard.js"></script>
-
-    <!-- Edit User Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit User</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="editForm">
-          <input type="hidden" id="editId">
-          <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" id="editName" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" id="editEmail" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Save Changes</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>

@@ -1,114 +1,131 @@
-let allUsers = []; // Master list for searching
+let allUsers = []; 
 
-// 1. MAIN FETCH FUNCTION
+window.deleteUser = async function(id) {
+    if (confirm("Are you sure you want to delete this user?")) {
+        try {
+            await fetch(`http://localhost:5000/api/users/${id}`, { method: 'DELETE' });
+            fetchUsers(); 
+        } catch (error) {
+            console.error("Error deleting user:", error);
+            alert("Failed to delete user. Check server connection.");
+        }
+    }
+};
+
 async function fetchUsers() {
     try {
         const res = await fetch('http://localhost:5000/api/users');
         allUsers = await res.json();
-        
-        displayUsers(allUsers); // Initially show everyone
+        displayUsers(allUsers); 
     } catch (error) {
         console.error("Fetch error:", error);
+        const container = document.getElementById('userList');
+        if (container) {
+            container.innerHTML = `<div class="text-danger text-center">Failed to load users from the server.</div>`;
+        }
     }
 }
 
-// 2. RENDER FUNCTION (The "Step 3" injection)
 function displayUsers(users) {
     const container = document.getElementById('userList');
-    if (!container) return; // Safety check
+    if (!container) return; 
     
-    container.innerHTML = ''; // Clear the "John Doe" static data
+    container.innerHTML = ''; 
 
     users.forEach(user => {
         const div = document.createElement('div');
-        div.className = 'card p-3 mb-2 shadow-sm';
-       div.innerHTML = `
-    <h5>${user.name}</h5>
-        <p class="text-muted mb-2">${user.email}</p>
-        <div class="d-flex justify-content-between align-items-center">
-            <span class="badge bg-info">${user.role || 'User'}</span>
-            <div>
-                <!-- Update Button with required class and data-id -->
-                <button class="btn btn-warning btn-sm edit-btn" data-id="${user._id}">
-                    Edit
-                </button>
-                <!-- Delete Button with required class and data-id -->
-                <button class="btn btn-danger btn-sm delete-btn" data-id="${user._id}" onclick="deleteUser('${user._id}')">
-                    Delete
-                </button>
+        div.className = 'card border-0 rounded-4 shadow-sm p-3 mb-3 action-card';
+        div.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="fw-bold mb-0 text-dark">${user.name}</h6>
+                    <small class="text-muted" style="font-size: 0.8rem;">${user.email}</small>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-info rounded-pill px-3 py-1 mb-2 d-block shadow-sm">${user.role || 'User'}</span>
+                    <button onclick="deleteUser('${user._id}')" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm fw-bold">
+                        Delete
+                    </button>
+                </div>
             </div>
-        </div>
-    `;
+        `;
         container.appendChild(div);
     });
 }
 
-// 3. SEARCH LISTENER (Task 4)
-const searchInput = document.getElementById("searchInput");
-if (searchInput) {
-    searchInput.addEventListener("input", function() {
-        const searchTerm = this.value.toLowerCase();
-        const filtered = allUsers.filter(u => 
-            u.name.toLowerCase().includes(searchTerm)
-        );
-        displayUsers(filtered);
-    });
-}
+// ==========================================
+// 2. SPA ROUTER & DOM INITIALIZATION
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const appContent = document.getElementById('app-content');
+    const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
 
-// 4. DELETE FUNCTION
-async function deleteUser(id) {
-    if (confirm("Are you sure you want to delete this user?")) {
-        await fetch(`http://localhost:5000/api/users/${id}`, {
-            method: 'DELETE'
-        });
-        fetchUsers(); // Refresh the list automatically
-    }
-}
-
-// START EVERYTHING
-fetchUsers();
-
-// Listen for clicks on the Edit buttons
-document.addEventListener('click', async (e) => {
-    if (e.target.classList.contains('edit-btn')) {
-        const id = e.target.getAttribute('data-id');
+    async function loadPage(pageUrl) {
+        if (!appContent) return;
         
-        // Fetch specific user data from your backend (Port 5000)
-        const res = await fetch(`http://localhost:5000/api/users/${id}`);
-        const user = await res.json();
+        try {
+            // Show loading spinner
+            appContent.innerHTML = `<div class="d-flex justify-content-center mt-5"><div class="spinner-border text-orange" role="status"></div></div>`;
+            
+            const response = await fetch(pageUrl);
+            if (!response.ok) throw new Error(`Could not load ${pageUrl}`);
+            
+            const htmlText = await response.text();
+            
+            // --- THE UPGRADE: Parse the HTML so we don't duplicate the header/nav ---
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+            
+            // Extract ONLY the content inside the <main> tag of the fetched page
+            const newMainContent = doc.querySelector('main');
+            
+            if (newMainContent) {
+                appContent.innerHTML = newMainContent.innerHTML;
+            } else {
+                // Fallback just in case there is no <main> tag
+                appContent.innerHTML = htmlText; 
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // Fill the modal inputs with the current data
-        document.getElementById('editName').value = user.name;
-        document.getElementById('editEmail').value = user.email;
-        document.getElementById('editId').value = user._id;
+            // Re-initialize specific page logic now that the new DOM exists
+            initDynamicContent();
 
-        // Show the modal
-        const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-        editModal.show();
+        } catch (error) {
+            appContent.innerHTML = `<div class="alert alert-danger text-center mt-5 rounded-4 shadow-sm border-0">Error loading view. Ensure you are running a local server.</div>`;
+        }
     }
-});
 
-// Handle the form submission
-document.getElementById('editForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+    function initDynamicContent() {
+        if (document.getElementById('userList')) {
+            fetchUsers();
+        }
 
-    const id = document.getElementById('editId').value;
-    const updatedData = {
-        name: document.getElementById('editName').value,
-        email: document.getElementById('editEmail').value
-    };
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+            searchInput.addEventListener("input", function() {
+                const searchTerm = this.value.toLowerCase();
+                const filtered = allUsers.filter(u => 
+                    u.name.toLowerCase().includes(searchTerm)
+                );
+                displayUsers(filtered);
+            });
+        }
+    }
 
-    // Send the PUT request to your backend
-    const res = await fetch(`http://localhost:5000/api/users/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData)
+    // Global Click Listener for Navigation
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.nav-trigger');
+        if (trigger) {
+            e.preventDefault();
+            const targetPage = trigger.getAttribute('data-target');
+            if (targetPage) loadPage(targetPage);
+
+            // Update bottom nav highlights
+            if (trigger.classList.contains('nav-item')) {
+                bottomNavItems.forEach(nav => nav.classList.remove('active'));
+                trigger.classList.add('active');
+            }
+        }
     });
-
-    if (res.ok) {
-        alert("User updated successfully!");
-        location.reload(); // Refresh to see changes
-    } else {
-        alert("Failed to update user.");
-    }
 });

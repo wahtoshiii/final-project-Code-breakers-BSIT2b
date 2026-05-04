@@ -49,4 +49,19 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Update Order Status (Accept, Decline, Ready)
+router.patch('/:id/status', async (req, res) => {
+    try {
+        const { status } = req.body;
+        const updatedOrder = await Order.findByIdAndUpdate(
+            req.params.id, 
+            { status }, 
+            { new: true }
+        );
+        res.json(updatedOrder);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update order status" });
+    }
+});
+
 module.exports = router;

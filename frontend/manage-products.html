@@ -1,46 +1,146 @@
-<div class="modal fade" id="addProductModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add New Product</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form action="#" method="POST">
-          <div class="mb-3">
-            <label class="form-label">Product Name</label>
-            <input type="text" name="product_name" class="form-control" required>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea name="description" class="form-control" rows="3"></textarea>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Price (₱)</label>
-              <input type="number" name="price" class="form-control" step="0.01" required>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Marketplace - Campus Hub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <style>
+        .btn-orange { background-color: #FF6B35; color: white; border: none; }
+        .btn-orange:hover { background-color: #e55a2b; color: white; }
+    </style>
+</head>
+<body class="app-bg pb-5 mb-5">
+    
+    <!-- Standardized Top Header -->
+    <header class="app-header text-white p-3 shadow-sm fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="dashboard.html" class="d-flex align-items-center text-decoration-none text-white nav-trigger" data-target="dashboard.html">
+                <div class="logo-box me-3 fs-5" style="width: 45px; height: 45px;">CH</div>
+                <div>
+                    <h5 class="mb-0 fw-bold">Campus Hub</h5>
+                    <small class="text-white-50" style="font-size: 0.75rem;">BUP Student Guide</small>
+                </div>
+            </a>
+            
+            <!-- RIGHT SIDE: Cart and Profile -->
+            <div class="d-flex align-items-center">
+                <!-- Cart Trigger Button -->
+                <a href="#" class="text-white text-decoration-none position-relative me-4" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                    <i class="bi bi-cart3 fs-3"></i>
+                    <!-- The red notification badge -->
+                    <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem; display: none;">0</span>
+                </a>
+                
+                <a href="profile.html" class="text-white text-decoration-none nav-trigger" data-target="profile.html">
+                    <i class="bi bi-person-circle fs-3"></i>
+                </a>
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Stock Quantity</label>
-              <input type="number" name="stock" class="form-control" required>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="app-content" class="container" style="margin-top: 100px;">
+        
+        <div class="mb-4">
+            <h3 class="fw-bold mb-1" style="color: #2c3e50;">Student Marketplace</h3>
+            <p class="text-muted small mb-0">Discover and support products from fellow Entrep students.</p>
+        </div>
+
+        <div class="input-group shadow-sm rounded-4 overflow-hidden mb-4 border-0">
+            <span class="input-group-text bg-white border-0 ps-4"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" class="form-control border-0 py-3 bg-white" placeholder="Search for food, supplies, etc...">
+        </div>
+
+        <!-- Product Grid -->
+        <div class="row g-3">
+            
+            <!-- Product Card 1 -->
+            <div class="col-6 col-md-4">
+                <div class="card h-100 shadow-sm border-0 rounded-4 p-2 action-card">
+                    <div class="card-body p-2 d-flex flex-column">
+                        <div class="bg-light rounded-3 mb-3 d-flex align-items-center justify-content-center" style="height: 100px;">
+                            <i class="bi bi-box-seam text-muted fs-2"></i>
+                        </div>
+                        <h6 class="card-title fw-bold text-dark mb-1" style="font-size: 0.9rem;">BUP School Supplies</h6>
+                        <p class="card-text text-muted mb-3 flex-grow-1" style="font-size: 0.75rem;">Essential kit for your daily classes.</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <h6 class="text-success fw-bold mb-0">₱150.00</h6>
+                            <!-- Add to Cart Button (With Data Attributes for JS) -->
+                            <button class="btn btn-sm btn-orange rounded-circle shadow-sm d-flex align-items-center justify-content-center add-to-cart-btn" style="width: 32px; height: 32px;" data-id="p1" data-name="BUP School Supplies" data-price="150">
+                                <i class="bi bi-plus-lg pointer-events-none"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label">Category</label>
-            <select name="product_category" class="form-select">
-              <option value="Food">Food</option>
-              <option value="Beverage">Beverage</option>
-              <option value="Supplies">Supplies</option>
-              <option value="Service">Service</option>
-            </select>
-          </div>
+            <!-- Product Card 2 -->
+            <div class="col-6 col-md-4">
+                <div class="card h-100 shadow-sm border-0 rounded-4 p-2 action-card">
+                    <div class="card-body p-2 d-flex flex-column">
+                        <div class="bg-light rounded-3 mb-3 d-flex align-items-center justify-content-center" style="height: 100px;">
+                            <i class="bi bi-cup-hot text-muted fs-2"></i>
+                        </div>
+                        <h6 class="card-title fw-bold text-dark mb-1" style="font-size: 0.9rem;">CurryalaIT</h6>
+                        <p class="card-text text-muted mb-3 flex-grow-1" style="font-size: 0.75rem;">Student-made Chicken Curry.</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <h6 class="text-success fw-bold mb-0">₱65.00</h6>
+                            <!-- Add to Cart Button (With Data Attributes for JS) -->
+                            <button class="btn btn-sm btn-orange rounded-circle shadow-sm d-flex align-items-center justify-content-center add-to-cart-btn" style="width: 32px; height: 32px;" data-id="p2" data-name="CurryalaIT" data-price="65">
+                                <i class="bi bi-plus-lg pointer-events-none"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <button type="submit" class="btn btn-success w-100">Save Product</button>
-        </form>
-      </div>
+        </div>
+    </main>
+
+    <!-- SLIDE-OUT CART PANEL (Bootstrap Offcanvas) -->
+    <div class="offcanvas offcanvas-end rounded-start-4 border-0 shadow" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartLabel" style="width: 350px; max-width: 90vw;">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold text-dark" id="cartLabel"><i class="bi bi-cart3 me-2"></i>My Cart</h5>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column p-0">
+            <!-- Items list -->
+            <div id="cartItemsContainer" class="flex-grow-1 overflow-auto p-3">
+                <div id="emptyCartMsg" class="text-center text-muted mt-5">
+                    <i class="bi bi-cart-x fs-1 mb-2"></i>
+                    <p>Your cart is empty.</p>
+                </div>
+                <!-- JS will inject cart items here -->
+            </div>
+            
+            <!-- Checkout Footer -->
+            <div class="border-top p-3 bg-light">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted fw-bold">Total Amount:</span>
+                    <h4 class="text-success fw-bold mb-0" id="cartTotal">₱0.00</h4>
+                </div>
+                <button class="btn btn-orange w-100 rounded-pill shadow-sm fw-bold py-2" id="checkoutBtn" disabled>Proceed to Checkout</button>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+
+    <!-- Standard Student Bottom Nav -->
+    <nav class="bottom-nav fixed-bottom bg-white border-top shadow-lg d-flex justify-content-around align-items-center pb-2 pt-2 px-1">
+        <a href="dashboard.html" class="nav-item nav-trigger" data-target="dashboard.html"><i class="bi bi-stars fs-5 d-block"></i><span>Home</span></a>
+        <a href="maps.html" class="nav-item nav-trigger" data-target="maps.html"><i class="bi bi-map fs-5 d-block"></i><span>Map</span></a>
+        <a href="chat.html" class="nav-item nav-trigger" data-target="chat.html"><i class="bi bi-chat fs-5 d-block"></i><span>Chat</span></a>
+        <a href="market.html" class="nav-item active nav-trigger" data-target="market.html"><i class="bi bi-bag fs-5 d-block"></i><span>Market</span></a>
+        <a href="explore.html" class="nav-item nav-trigger" data-target="explore.html"><i class="bi bi-building fs-5 d-block"></i><span>Explore</span></a>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/manage-products.js"></script>
+</body>
+</html>
