@@ -19,17 +19,27 @@ app.use('/api/auth', authRoutes);
 
 // backend/server.js
 
-const _frontend = path.join(__dirname, '..', 'frontend');
-app.use(express.static(_frontend));
+const path = require('path');
 
-// API Routes here
+// Resolve the frontend path clearly
+const frontendPath = path.join(__dirname, '..', 'frontend');
+
+// Serve static files
+app.use(express.static(frontendPath));
+
+// API Routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/userRoutes'));
 
-// THE FINAL FIX: 
-// This matches any route that does NOT start with /api 
-// and sends it to your login page.
-app.get(/^\/(?!api).*/, (req, res) => {
-    res.sendFile(path.join(_frontend, 'login.html'));
+// THE SAFE FIX: 
+// Instead of a wildcard string, use a basic Express function
+app.use((req, res, next) => {
+    // If the request is for an API, move on to the next handler
+    if (req.url.startsWith('/api')) {
+        return next();
+    }
+    // Otherwise, send the login page
+    res.sendFile(path.join(frontendPath, 'login.html'));
 });
 
 const PORT = process.env.PORT || 5000;
