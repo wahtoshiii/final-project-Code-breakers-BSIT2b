@@ -54,6 +54,25 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+
+  async function editUser(id) {
+      const newName = prompt("Enter new name:");
+      if (!newName) return;
+
+      try {
+          const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: newName })
+          });
+          
+          if (res.ok) {
+              fetchUsers(); // Refresh the list
+          }
+      } catch (error) {
+          console.error("Update error:", error);
+      }
+  }
 });
  
 module.exports = router;
