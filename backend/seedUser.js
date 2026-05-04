@@ -13,6 +13,13 @@ const seedDatabase = async () => {
         // Optional: Clears out old test users so you have a fresh start
         await User.deleteMany({}); 
 
+        const adminUser = {
+            name: "Admin User",
+            email: "admin@bup.edu.ph",
+            password: "adminpassword",
+            role: "admin"
+        };
+
         // Create our two distinct test accounts
         await User.create([
             { 

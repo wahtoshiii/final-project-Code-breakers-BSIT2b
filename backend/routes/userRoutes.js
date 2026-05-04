@@ -18,8 +18,8 @@ router.get('/', async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch users" });
   }
 });
 
@@ -45,14 +45,10 @@ router.put('/:id', async (req, res) => {
 // 4. Delete a user (DELETE)
 router.delete('/:id', async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-    
-    if (!deletedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json({ message: 'User deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    await User.findByIdAndDelete(req.params.id);
+        res.json({ message: "User removed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete user" });
   }
 
   async function editUser(id) {

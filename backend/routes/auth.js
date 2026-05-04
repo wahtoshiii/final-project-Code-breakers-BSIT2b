@@ -65,4 +65,26 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return res.status(400).json({ error: "User not found" });
+    }
+
+    if (user.password !== password) {
+        return res.status(400).json({ error: "Invalid password" });
+    }
+
+    // Success! Send the user data including the role back to frontend
+    res.json({
+        user: {
+            id: user._id,
+            name: user.name,
+            role: user.role
+        }
+    });
+});
+
 module.exports = router;
