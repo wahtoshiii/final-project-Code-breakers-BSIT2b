@@ -12,14 +12,17 @@ connectDB();
 
 const path = require('path');
 
-// Use this to help debug in the Render logs
-console.log("Current Directory:", __dirname);
-
-// Static folder path
+// 1. Static folder setup
 const frontendPath = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendPath));
 
-app.get('*', (req, res) => {
+// 2. Specific route for the landing page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'login.html'));
+});
+
+// 3. UPDATED Catch-all route (The fix for your specific error)
+app.get('/*', (req, res) => {
     res.sendFile(path.join(frontendPath, 'login.html'));
 });
 
