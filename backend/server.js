@@ -12,17 +12,15 @@ connectDB();
 
 const path = require('path');
 
-// 1. Tell Express where your frontend files are located
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Use this to help debug in the Render logs
+console.log("Current Directory:", __dirname);
 
-// 2. Point the main URL (/) to your login page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend', 'login.html'));
-});
+// Static folder path
+const frontendPath = path.join(__dirname, '..', 'frontend');
+app.use(express.static(frontendPath));
 
-// 3. Catch-all: If someone goes to a broken link, send them to login
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend', 'login.html'));
+    res.sendFile(path.join(frontendPath, 'login.html'));
 });
 
 app.use(cors());
