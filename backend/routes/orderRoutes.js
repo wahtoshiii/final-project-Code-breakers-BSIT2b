@@ -2,7 +2,19 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 
-// GET all orders
+// 1. POST — CREATE a new order (This was the missing piece!)
+// Users will hit this route when they click "Order Now" on the shop page
+router.post('/', async (req, res) => {
+  try {
+    const newOrder = new Order(req.body);
+    const savedOrder = await newOrder.save();
+    res.status(201).json(savedOrder);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to create order', error: err.message });
+  }
+});
+
+// 2. GET — Read all orders (Used by your Seller Dashboard)
 router.get('/', async (req, res) => {
   try {
     const orders = await Order.find();
@@ -12,7 +24,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET single order by ID
+// 3. GET — Read single order by ID
 router.get('/:id', async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -23,22 +35,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// PUT — update order by ID (e.g. change status)
+// 4. PUT — Update order by ID (Used by Accept/Decline/Ready buttons)
 router.put('/:id', async (req, res) => {
   try {
     const updated = await Order.findByIdAndUpdate(
       req.params.id,
-      req.body,
-      { new: true, runValidators: true }
+      { status: req.body.status }, // This forces MongoDB to ONLY touch the status field
+      { returnDocument: 'after' }  // We removed the strict 'runValidators' rule here!
     );
+    
     if (!updated) return res.status(404).json({ message: 'Order not found' });
     res.json(updated);
+    
   } catch (err) {
+    console.error("Backend Update Error:", err);
     res.status(400).json({ message: 'Update failed', error: err.message });
   }
 });
 
-// DELETE — delete order by ID
+// 5. DELETE — Delete order by ID
 router.delete('/:id', async (req, res) => {
   try {
     const deleted = await Order.findByIdAndDelete(req.params.id);
@@ -47,21 +62,6 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
-});
-
-// Update Order Status (Accept, Decline, Ready)
-router.patch('/:id/status', async (req, res) => {
-    try {
-        const { status } = req.body;
-        const updatedOrder = await Order.findByIdAndUpdate(
-            req.params.id, 
-            { status }, 
-            { new: true }
-        );
-        res.json(updatedOrder);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to update order status" });
-    }
 });
 
 module.exports = router;

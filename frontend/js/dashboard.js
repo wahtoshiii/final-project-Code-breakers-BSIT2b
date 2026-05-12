@@ -3,7 +3,7 @@ let allUsers = [];
 window.deleteUser = async function(id) {
     if (confirm("Are you sure you want to delete this user?")) {
         try {
-            await fetch(`http://localhost:5000/api/users/${id}`, { method: 'DELETE' });
+            await fetch(`/api/users/${id}`, { method: 'DELETE' });
             fetchUsers(); 
         } catch (error) {
             console.error("Error deleting user:", error);
@@ -14,7 +14,7 @@ window.deleteUser = async function(id) {
 
 async function fetchUsers() {
     try {
-        const res = await fetch('http://localhost:5000/api/users');
+        const res = await fetch('/api/users');
         allUsers = await res.json();
         displayUsers(allUsers); 
     } catch (error) {

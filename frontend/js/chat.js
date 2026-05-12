@@ -30,41 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToBottom();
     }
 
-    // Mock AI Logic based on the Code-breakers Proposal
-    function generateBotResponse(userText) {
-        const text = userText.toLowerCase();
-
-        // 1. Navigation / Map Queries
-        if (text.includes('where') || text.includes('map') || text.includes('location') || text.includes('building')) {
-            return "You can easily find buildings, offices, and shops using the <strong>Interactive Campus Map</strong> tab below! If you need a specific office, like the IT Department, it's near the main quad.";
-        }
-        
-        // 2. Marketplace / Food / Products
-        if (text.includes('food') || text.includes('order') || text.includes('buy') || text.includes('shop') || text.includes('market')) {
-            return "Looking for something to buy? Check out the <strong>Student Marketplace</strong> tab. You can order products, meals, and supplies directly from Entrep students there!";
-        }
-
-        // 3. Walkthroughs / Facilities
-        if (text.includes('preview') || text.includes('look') || text.includes('inside') || text.includes('facility')) {
-            return "Want to see what an establishment looks like before visiting? Head over to the <strong>Explore</strong> tab for our Establishment Walkthroughs.";
-        }
-
-        // 4. Status / Open Hours
-        if (text.includes('open') || text.includes('closed') || text.includes('status') || text.includes('time')) {
-            return "Our Real-time Status Tracker is active! Currently, most academic buildings are <strong>Open</strong>, and the Student Marketplace is accepting orders.";
-        }
-
-        // 5. General Greetings
-        if (text.includes('hi') || text.includes('hello') || text.includes('hey')) {
-            return "Hello there! How can I assist you with your day at Bicol University Polangui?";
-        }
-
-        // 6. Default Fallback
-        return "I'm still learning, but I'm here to help you navigate BUP! You can ask me about campus locations, student shops, or facility status.";
-    }
-
-    // Handle sending message
-    function handleSend() {
+    // Handle sending message and talking to the REAL backend
+    async function handleSend() {
         const text = userInput.value.trim();
         if (text === '') return;
 
@@ -84,12 +51,34 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBox.appendChild(typingDiv);
         scrollToBottom();
 
-        // 3. Simulate network delay, then respond
-        setTimeout(() => {
+        // 3. THE REAL BACKEND CONNECTION
+        try {
+            const token = localStorage.getItem('token'); 
+            
+            // NOTE: Change this to '/api/chatbot/ask' when you deploy to Render!
+            const API_URL = '/api/chatbot/ask'; 
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Only send authorization if a token exists
+                    'Authorization': token ? `Bearer ${token}` : '' 
+                },
+                body: JSON.stringify({ message: text })
+            });
+
+            const data = await response.json();
+            
+            // 4. Remove typing indicator and show the true AI response
             document.getElementById(typingId).remove();
-            const response = generateBotResponse(text);
-            appendMessage('bot', response);
-        }, 1000); // 1 second delay
+            appendMessage('bot', data.reply);
+
+        } catch (error) {
+            console.error("Chatbot Fetch Error:", error);
+            document.getElementById(typingId).remove();
+            appendMessage('bot', "Connection error. Please make sure the backend server is running.");
+        }
     }
 
     // Event Listeners

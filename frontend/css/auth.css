@@ -123,3 +123,30 @@ body.app-bg {
     }
     .nav-item { padding: 6px 12px; }
 }
+
+/* The main wrapper for the whole page/chat view */
+.chat-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Takes up the exact full height of the screen */
+    overflow: hidden; /* Prevents the whole page from scrolling */
+}
+
+/* The area where the messages appear */
+.chat-messages {
+    flex: 1; /* This tells it to grow and fill all available space */
+    overflow-y: auto; /* Adds a scrollbar ONLY to the messages area */
+    padding: 20px;
+    
+    /* Optional: Add a little padding at the bottom so the last message 
+       doesn't touch the very edge of the input box */
+    padding-bottom: 30px; 
+}
+
+/* Your input box and bottom navigation */
+.chat-input-area {
+    /* No absolute or fixed positioning needed here */
+    background-color: #f4f4f4;
+    padding: 15px;
+    /* Flexbox will naturally keep this pushed to the bottom */
+}

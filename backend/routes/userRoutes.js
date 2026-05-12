@@ -14,13 +14,14 @@ router.post('/', async (req, res) => {
 });
  
 // 2. Read all users (GET)
-router.get('/', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch users" });
-  }
+router.get('/all', async (req, res) => {
+    try {
+        // We use .select('-password') so it doesn't accidentally send user passwords to the frontend!
+        const users = await User.find().select('-password'); 
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
 });
 
 // 3. Update a user (PUT)
@@ -56,7 +57,7 @@ router.delete('/:id', async (req, res) => {
       if (!newName) return;
 
       try {
-          const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+          const res = await fetch(`/api/users/${id}`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ name: newName })

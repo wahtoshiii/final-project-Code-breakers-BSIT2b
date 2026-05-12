@@ -1,9 +1,8 @@
 const path = require('path');
 // This forces dotenv to look inside the backend folder for the .env file
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
-
 require('dns').setServers(['8.8.8.8', '8.8.4.4']);
-require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
@@ -12,6 +11,7 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/auth');
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 
@@ -23,9 +23,23 @@ app.use(cors());
 app.use(express.json());
 
 // 1. Define API Routes FIRST
+// This tells the server to hand off ALL product logic to productroutes.js
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/chatbot', require('./routes/chatbotRoutes'));
+
+// GET: all purchase logs (for Admin view)
+app.get('/api/admin/all-history', async (req, res) => {
+    try {
+        console.log("Admin is viewing all records");
+        // Ensure you return something so the frontend doesn't hang!
+        res.json({ message: "Admin history logs placeholder" }); 
+    } catch (error) {
+        res.status(500).send("Server Error");
+    }
+});
 
 // 2. Resolve Static Files
 // Using path.resolve ensures Render finds the folder regardless of root settings
@@ -33,7 +47,6 @@ const frontendPath = path.resolve(__dirname, '..', 'frontend');
 app.use(express.static(frontendPath));
 
 // 3. The "Safe Mode" Catch-all
-// This handles the PathError from image_3974be.png by avoiding wildcards
 app.use((req, res, next) => {
     if (req.url.startsWith('/api')) {
         return next();
