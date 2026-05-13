@@ -5,18 +5,18 @@
 * **Course & Section:** BSIT-2B
 
 ### Members & Roles
-* **Joshua Olarcos:** Project Manager
-  * *Contribution:* Oversaw overall project development, delegated tasks, managed the team workflow, and assisted with backend architecture and integration.
-* **Grace Ann Carilla:** Backend 
-  * *Contribution:* Spearheaded server-side logic, routing using Node.js and Express.js, and established the RESTful API endpoints.
-* **Jasmine Escala:** Frontend 
-  * *Contribution:* Designed and developed the responsive, user-friendly interfaces and multi-role dashboards using HTML5, CSS3, and JavaScript.
-* **Reyson:** Database Manager
-  * *Contribution:* Managed MongoDB database modeling, schema creation, data relationships, and system initialization (via `seedUser.js`).
-* **Lance:** GitHub Manager
-  * *Contribution:* Handled version control, repository organization, branch merging, and oversaw the deployment process to Render.
-* **Ansherina Rabino:** Tester
-  * *Contribution:* Conducted rigorous Quality Assurance (QA) testing of the system's CRUD functionalities, secure routing, and cross-device responsiveness.
+* Joshua Olarcos: Project Manager
+  Contribution: Oversaw overall project development, delegated tasks, managed the team workflow, and assisted with backend architecture and integration.
+* Grace Ann Carilla: Backend 
+  Contribution: Spearheaded server-side logic, routing using Node.js and Express.js, and established the RESTful API endpoints.
+* Tiffamy C. Sentillas: Frontend 
+  Contribution: Designed and developed the responsive, user-friendly interfaces and multi-role dashboards using HTML5, CSS3, and JavaScript.
+* Ma. Miscy M. Rubio: Database Manager
+  Contribution: Managed MongoDB database modeling, schema creation, data relationships, and system initialization (via `seedUser.js`).
+* Ella Mae C. Lamud: GitHub Manager
+  Contribution: Handled version control, repository organization, branch merging, and oversaw the deployment process to Render.
+* Rein Ashley S. Requio: Tester
+  Contribution: Conducted rigorous Quality Assurance (QA) testing of the system's CRUD functionalities, secure routing, and cross-device responsiveness.
 
 ---
 
@@ -34,7 +34,6 @@ The project demonstrates a comprehensive ecosystem designed to manage campus ope
 
 ## Project Links & Materials
 * **Live Deployment URL:** [Campus Service Hub on Render](https://final-project-code-breakers-bsit2b-v8yt.onrender.com)
-* **Presentation:** [INSERT LINK TO YOUR POWERPOINT/PDF PRESENTATION HERE]
 * **Documentation:** This README file serves as the primary technical documentation for the system.
 
 ---
@@ -113,4 +112,4 @@ node server.js
 ---
 
 ## Notes
-This system serves as the final full-stack project of the Code:<Breakers> group, d
+This system serves as the final full-stack project of the Code:<Breakers> group, demonstrating complete integration from database modeling and server-side logic to dynamic frontend user experiences.
