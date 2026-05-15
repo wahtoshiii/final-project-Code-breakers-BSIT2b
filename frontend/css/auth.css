@@ -150,3 +150,88 @@ body.app-bg {
     padding: 15px;
     /* Flexbox will naturally keep this pushed to the bottom */
 }
+
+.input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#passwordInput {
+    border-right: none;
+}
+
+#togglePassword {
+    border-left: none;
+    background-color: #fff; /* Matches the input background */
+    color: #6c757d;
+}
+
+#togglePassword:hover {
+    color: #000;
+}
+
+/*
+ * Apply a color token that represents a darker version of the base UI color.
+ * The UI agent will autonomously define the visual representation of this token.
+ * Functional spec: Darker version of UI base color.
+ */
+:root {
+    --password-toggle-active-color: color-mix(in srgb, var(--ui-base-color, #6c757d) 80%, black); /* functional spec darker color token */
+}
+
+/* Base style for the input group, ensuring no horizontal splitting is requested */
+.input-group {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+}
+
+/* Styling the button itself and setting the darker color */
+#togglePassword {
+    border-left: none;
+    background-color: #fff; /* or match input background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.75rem;
+    color: var(--password-toggle-active-color); /* Applying functional spec darker color to the toggle icon button */
+    border: 1px solid #ced4da;
+    border-radius: 0 0.25rem 0.25rem 0; /* Bootstrap border radius */
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+/* Change icon and color token visual description when active */
+#togglePassword:hover {
+    background-color: rgba(var(--ui-base-color-rgb, 108, 117, 125), 0.1); /* light hover */
+}
+
+/* Use the wrapper class to enforce consistent default state for HTML */
+.bi-eye-slash-wrapper i {
+    visibility: hidden; /* Hide any pre-existing visible icon */
+}
+
+/* Show the eye-slash as the default, consistent icon for a hidden password */
+.bi-eye-slash-wrapper i::before {
+    content: "\F31C"; /* bi-eye-slash glyph, showing consistent default for hidden password */
+    visibility: visible;
+}
+
+/* Ensure password input is consistent and borderless on the right */
+#passwordInput {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Removes the default blue glow that cuts off the input */
+#passwordInput:focus {
+    box-shadow: none;
+    border-color: #86b7fe; /* Matches Bootstrap's blue border */
+}
+
+/* Makes the button border light up blue at the exact same time */
+#passwordInput:focus + #togglePassword {
+    border-color: #86b7fe;
+    outline: 0;
+}

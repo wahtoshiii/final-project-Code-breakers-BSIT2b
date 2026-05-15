@@ -1,57 +1,30 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const router = express.Router();
-const User = require('../models/User'); // Your MongoDB model
+const User = require('../models/User'); 
 
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // 1. Find the user in MongoDB
-        const user = await User.findOne({ email });
-        
-        if (!user) {
-            return res.status(400).json({ error: "User not found" });
-        }
-
-        // 2. Check password (assuming plain text for testing, but use bcrypt in production!)
-        if (user.password !== password) {
-            return res.status(400).json({ error: "Invalid password" });
-        }
-
-        // 3. SUCCESS! Send back the user's role and ID
-        res.json({ 
-            success: true, 
-            message: "Login successful",
-            user: {
-                id: user._id,
-                name: user.name,
-                role: user.role // 'student' or 'seller'
-            }
-        });
-
-    } catch (error) {
-        res.status(500).json({ error: "Server error" });
-    }
-});
-
-// REGISTER ROUTE
+// ==========================================
+// 1. REGISTER ROUTE
+// ==========================================
 router.post('/register', async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
 
-        // Check if user already exists
         const userExists = await User.findOne({ email });
         if (userExists) {
-            return res.status(400).json({ error: "Email already registered" });
+            return res.status(400).json({ message: "Email already registered" });
         }
 
-        // Create new user
         const newUser = new User({
             name,
             email,
-            password, // In a real app, hash this with bcrypt first!
+            password, 
             role: role || 'student' 
         });
+
+        // Hash the password BEFORE saving
+        const salt = await bcrypt.genSalt(10);
+        newUser.password = await bcrypt.hash(password, salt);
 
         await newUser.save();
         
@@ -61,30 +34,48 @@ router.post('/register', async (req, res) => {
             user: { id: newUser._id, name: newUser.name, role: newUser.role }
         });
     } catch (error) {
-        res.status(500).json({ error: "Server error during registration" });
+        console.error("Registration Error:", error);
+        res.status(500).json({ message: "Server error during registration" });
     }
 });
 
+// ==========================================
+// 2. LOGIN ROUTE
+// ==========================================
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    try {
+        const { email, password } = req.body;
 
-    if (!user) {
-        return res.status(400).json({ error: "User not found" });
-    }
-
-    if (user.password !== password) {
-        return res.status(400).json({ error: "Invalid password" });
-    }
-
-    // Success! Send the user data including the role back to frontend
-    res.json({
-        user: {
-            id: user._id,
-            name: user.name,
-            role: user.role
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "Account does not exist. Please register." });
         }
-    });
+
+        // 🚨 THE CONFESSION LOG 🚨
+        console.log("\n=== LOGIN DEBUG ===");
+        console.log("1. Email Typed:", email);
+        console.log("2. Password Typed:", password);
+        console.log("3. Password in DB :", user.password);
+        console.log("===================\n");
+
+        // Check password match
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        // Success
+        res.status(200).json({ 
+            message: "Login successful", 
+            user: {
+                id: user._id,
+                name: user.name,
+                role: user.role,
+                email: user.email
+            }
+        });
+
+    } catch (error) {
+        console.error("Login Error:", error);
+        res.status(500).json({ message: "Server error during login." });
+    }
 });
 
 module.exports = router;

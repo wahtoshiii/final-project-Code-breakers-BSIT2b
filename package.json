@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/wahtoshiii/final-project-Code-breakers-BSIT2b#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

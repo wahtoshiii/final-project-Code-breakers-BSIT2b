@@ -68,9 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
             btn.disabled = true;
 
+            // ✨ THE FIX: Check who is actually logged in! ✨
+            const userData = localStorage.getItem('currentUser');
+            const currentUser = userData ? JSON.parse(userData) : { name: "Guest Student" };
+
             // Package the order details
             const orderData = {
-                customerName: "Joshua Olarcos", // Set for testing
+                customerName: currentUser.name, // Automatically uses the logged-in user's name
                 productName: btn.getAttribute('data-name'),
                 quantity: 1,
                 totalPrice: parseFloat(btn.getAttribute('data-price')),

@@ -121,9 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ─── 3. PROCESS ORDER BUTTON CLICKS (Send to DB) ───
-    const mainContainer = document.querySelector('main');
-    if (mainContainer) {
-        mainContainer.addEventListener('click', async (e) => {
+    // ✨ THE FIX: Listen directly to the orders list instead of 'main' ✨
+    if (ordersList) {
+        ordersList.addEventListener('click', async (e) => {
             const btn = e.target.closest('.btn');
             if (!btn) return;
 
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newStatus = btn.getAttribute('data-action');
             const orderId = btn.getAttribute('data-id');
             
-            if (!newStatus || !orderId) return; // Ignore clicks on the 'Add Item' button
+            if (!newStatus || !orderId) return; // Ignore clicks on things that aren't action buttons
 
             // Change button text to a spinner so you know it's loading
             const originalText = btn.innerHTML;
@@ -169,8 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('itemName').value;
             const price = document.getElementById('itemPrice').value || "0";
             const stock = document.getElementById('itemStock').value || "0";
+            const category = document.getElementById('itemCategory').value;
 
-            const productData = { name: name, price: parseFloat(price), stock: parseInt(stock) };
+            const productData = { name: name, price: parseFloat(price), stock: parseInt(stock), category: category };
 
             try {
                 const response = await fetch('/api/products', {

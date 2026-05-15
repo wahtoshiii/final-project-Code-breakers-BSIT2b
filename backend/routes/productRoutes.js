@@ -2,29 +2,41 @@ const express = require('express');
 const router = express.Router();
 
 // 1. IMPORT THE PRODUCT MODEL
-// (Make sure the path matches exactly where the models folder is located)
 const Product = require('../models/Product'); 
 
 // 2. POST — create a new product OR update stock if it already exists
 router.post('/', async (req, res) => {
   try {
-    const { name, price, stock } = req.body;
+    // ✨ THE FIX: Extract 'category' alongside the other data ✨
+    const { name, price, stock, category } = req.body;
 
     // Step 1: Search the database to see if this exact item name already exists
     const existingProduct = await Product.findOne({ name: name });
 
     if (existingProduct) {
-        // Step 2: If it DOES exist, just add the new stock to the existing stock!
+        // Step 2: If it DOES exist, add the new stock to the existing stock
         existingProduct.stock += parseInt(stock);
         
-        // We also update it to the newest price, just in case you changed it
+        // Update price
         existingProduct.price = parseFloat(price); 
+        
+        // ✨ THE FIX: Update the category too, just in case the seller changed it! ✨
+        if (category) {
+            existingProduct.category = category;
+        }
         
         const updatedProduct = await existingProduct.save();
         return res.status(200).json(updatedProduct);
     } else {
         // Step 3: If it DOES NOT exist, create a brand new product entry
-        const newProduct = new Product(req.body);
+        // ✨ THE FIX: Explicitly tell MongoDB to save the category (with a fallback) ✨
+        const newProduct = new Product({
+            name: name,
+            price: parseFloat(price),
+            stock: parseInt(stock),
+            category: category || 'Other' 
+        });
+        
         const savedProduct = await newProduct.save();
         return res.status(201).json(savedProduct);
     }
@@ -33,7 +45,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 3. GET all products (Removed the hardcoded placeholder)
+// 3. GET all products
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
@@ -80,5 +92,5 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// 7. EXPORT THE ROUTER (This must ALWAYS be the absolute last line)
+// 7. EXPORT THE ROUTER
 module.exports = router;

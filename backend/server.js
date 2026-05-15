@@ -28,7 +28,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/chatbot', require('./routes/chatbotRoutes'));
 
 // GET: all purchase logs (for Admin view)
 app.get('/api/admin/all-history', async (req, res) => {

@@ -16,6 +16,15 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
+    category: { 
+        type: String, 
+        required: true, 
+        default: "Other" 
+    },
+    imageUrl: { 
+        type: String, 
+        required: false 
+    },
     seller: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

@@ -1,7 +1,8 @@
 require('dns').setServers(['8.8.8.8', '8.8.4.4']);
 require('dotenv').config();
 const mongoose = require('mongoose');
-const User = require('./models/User.js'); // Make sure this path points to your User model
+const bcrypt = require('bcryptjs'); // 1. IMPORT ADDED HERE
+const User = require('./models/User.js'); 
 
 // Connect to the DB
 mongoose.connect(process.env.MONGO_URI)
@@ -10,33 +11,27 @@ mongoose.connect(process.env.MONGO_URI)
 
 const seedDatabase = async () => {
     try {
-        // Optional: Clears out old test users so you have a fresh start
-        await User.deleteMany({}); 
+        // 2. Hash the password "password123" so it's secure
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash('password123', salt);
 
-        const adminUser = {
-            name: "Admin User",
-            email: "admin@bup.edu.ph",
-            password: "adminpassword",
-            role: "admin"
-        };
-
-        // Create our two distinct test accounts
+        // 3. Inject the secure hashedPassword into the test accounts
         await User.create([
             { 
                 name: "Joshua Olarcos", 
                 email: "joshualoria.olarcos24@bicol-u.edu.ph", 
-                password: "password123", // Keep it simple for testing!
-                role: "student" 
+                password: hashedPassword, // SECURE HASH APPLIED
+                role: "admin" 
             },
             { 
                 name: "Grace Ann Carilla", 
                 email: "graceannsumpay.carilla24@bicol-u.edu.ph", 
-                password: "password123", 
+                password: hashedPassword, // SECURE HASH APPLIED
                 role: "seller" 
             }
         ]);
 
-        console.log('✅ Test Users Seeded Successfully!');
+        console.log('✅ Test Users Seeded Successfully with SECURE passwords!');
         process.exit();
     } catch (error) {
         console.error('❌ Error seeding users:', error);
