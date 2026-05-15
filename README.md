@@ -5,30 +5,34 @@
 * **Course & Section:** BSIT-2B
 
 ### Members & Roles
-* Joshua Olarcos: Project Manager
+* Joshua L. Olarcos: Project Manager  
   Contribution: Oversaw overall project development, delegated tasks, managed the team workflow, and assisted with backend architecture and integration.
-* Grace Ann Carilla: Backend 
+
+* Grace Ann S. Carilla: Backend  
   Contribution: Spearheaded server-side logic, routing using Node.js and Express.js, and established the RESTful API endpoints.
-* Tiffamy C. Sentillas: Frontend 
+
+* Tiffany C. Sentillas: Frontend  
   Contribution: Designed and developed the responsive, user-friendly interfaces and multi-role dashboards using HTML5, CSS3, and JavaScript.
-* Ma. Miscy M. Rubio: Database Manager
+
+* Ma. Miscy M. Rubio: Database Manager  
   Contribution: Managed MongoDB database modeling, schema creation, data relationships, and system initialization (via `seedUser.js`).
-* Ella Mae C. Lamud: GitHub Manager
+
+* Ella Mae C. Lamud: GitHub Manager  
   Contribution: Handled version control, repository organization, branch merging, and oversaw the deployment process to Render.
-* Rein Ashley S. Requio: Tester
+
+* Rein Ashley S. Requio: Tester  
   Contribution: Conducted rigorous Quality Assurance (QA) testing of the system's CRUD functionalities, secure routing, and cross-device responsiveness.
 
 ---
 
 ## Project Description
-This repository contains the full-stack system for the CAMPUS SERVICE HUB, a centralized digital platform designed to streamline campus services and student interactions. 
+This repository contains the full-stack system for the CAMPUS SERVICE HUB, a centralized digital platform designed to streamline campus services and student interactions.
 
 The project demonstrates a comprehensive ecosystem designed to manage campus operations, featuring:
 - Secure role-based access for standard users, admins, and system owners
 - A fully integrated order and product management system with full CRUD capabilities
-- Integrated real-time chat functionality
-- Interactive map features for campus navigation
-- Responsive, intuitive user interfaces tailored for different user roles
+- Responsive and user-friendly interfaces for different user roles
+- RESTful API integration for efficient data handling and communication
 
 ---
 
@@ -43,22 +47,21 @@ The project demonstrates a comprehensive ecosystem designed to manage campus ope
 ### Complete Order & Product Management (CRUD)
 A robust module where students can explore available services/items, add them to their cart, and track order statuses (`cart.html`, `order-status.html`). The system provides Admins and Owners with dedicated tools to manage product listings, update inventory, and handle fulfillments (`manage-products.html`).
 
-### Campus Mapping & Navigation
-Integrated map functionalities (`maps.html`, `maps.js`) to provide users with spatial awareness and navigation assistance across the campus.
-
-### Integrated Chat System
-A built-in chat interface (`chat.html`, `chat.js`) designed to provide instant communication, support, and engagement within the campus hub.
-
 ### Multi-Role Dashboards
 Distinct, secure routing and dashboard environments tailored specifically for:
+
 * Students/Users: Browsing, profiling, and ordering (`dashboard.html`, `explore.html`, `profile.html`)
 * Admins: Operational management and oversight (`admin-dashboard.html`)
 * Owners: High-level system control and analytics (`owner-dashboard.html`)
+
+### Secure Authentication & Routing
+The system includes protected routes and role-based authentication to ensure that users can only access features and pages intended for their assigned roles.
 
 ---
 
 ## System Architecture & Planning
 The system was meticulously planned before development, with core documentation located in the `docs/planning/` directory:
+
 * Data Flow Diagram (DFD)
 * Entity Relationship Diagram (ERD)
 * Use Case Diagram
@@ -89,7 +92,7 @@ Bash
 cd final-project-Code-breakers-BSIT2b
 
 
-3. **Install dependencies:**
+2. **Install dependencies:**
    Ensure you have Node.js installed, then run:
    ```bash
    npm install
