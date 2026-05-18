@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 
-// 1. POST — CREATE a new order (This was the missing piece!)
+// 1. POST — CREATE a new order
 // Users will hit this route when they click "Order Now" on the shop page
 router.post('/', async (req, res) => {
   try {
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 2. GET — Read all orders (Used by your Seller Dashboard)
+// 2. GET — Read all orders
 router.get('/', async (req, res) => {
   try {
     const orders = await Order.find();
@@ -40,8 +40,8 @@ router.put('/:id', async (req, res) => {
   try {
     const updated = await Order.findByIdAndUpdate(
       req.params.id,
-      { status: req.body.status }, // This forces MongoDB to ONLY touch the status field
-      { returnDocument: 'after' }  // We removed the strict 'runValidators' rule here!
+      { status: req.body.status }, // Dynamically grabs whatever status the frontend sends
+      { new: true } // Returns the newly updated document
     );
     
     if (!updated) return res.status(404).json({ message: 'Order not found' });

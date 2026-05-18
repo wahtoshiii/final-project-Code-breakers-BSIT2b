@@ -12,6 +12,27 @@ window.deleteUser = async function(id) {
     }
 };
 
+// Add this global function so any button can trigger it
+window.updateOrderStatus = async function(orderId, newStatus) {
+    try {
+        const response = await fetch(`/api/orders/${orderId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+        });
+        
+        if (response.ok) {
+            alert(`Order updated to: ${newStatus}`);
+            // If you have a fetchOrders() function, call it here to refresh the screen!
+            // fetchOrders(); 
+        } else {
+            alert("Failed to update order status.");
+        }
+    } catch (err) {
+        console.error("Error updating order:", err);
+    }
+};
+
 async function fetchUsers() {
     try {
         const res = await fetch('/api/users');

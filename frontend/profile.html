@@ -29,21 +29,22 @@
     <!-- Main Content -->
     <main id="app-content" class="container" style="margin-top: 100px;">
         
-        <!-- Dynamic User Info Card -->
-        <div class="card border-0 rounded-4 shadow-sm mb-3">
+        <div class="card border-0 rounded-4 shadow-sm mb-4">
             <div class="card-body text-center p-4">
-                <!-- Initials Circle -->
                 <div id="profileInitials" class="rounded-circle bg-orange text-white d-inline-flex align-items-center justify-content-center mb-3 fw-bold" style="width: 80px; height: 80px; font-size: 2rem;">
                     --
                 </div>
-                <!-- User Name -->
                 <h4 id="profileName" class="fw-bold text-dark mb-1">Loading...</h4>
-                <!-- Role / Subtitle -->
                 <p id="profileRole" class="text-muted small mb-0">Loading details...</p>
             </div>
         </div>
 
-        <!-- Logout Button Card -->
+        <h5 class="fw-bold mb-3 text-dark px-1">My Orders</h5>
+        <div id="orderContainer" class="mb-4">
+            <div class="text-center text-muted mt-3 spinner-border spinner-border-sm" role="status"></div>
+            <span class="text-muted ms-2">Loading your orders...</span>
+        </div>
+
         <div class="card border-0 rounded-4 shadow-sm logout-card" id="logoutBtn">
             <div class="card-body p-3 d-flex align-items-center text-danger">
                 <i class="bi bi-box-arrow-right fs-5 me-3"></i>

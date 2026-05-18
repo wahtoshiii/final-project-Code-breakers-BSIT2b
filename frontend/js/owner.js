@@ -233,3 +233,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+async function markOrderReady(orderId) {
+    try {
+        const response = await fetch(`/api/orders/${orderId}/ready`, {
+            method: 'PUT'
+        });
+        if (response.ok) {
+            alert("Order marked as ready! The student will see the update.");
+            location.reload(); // Refresh to show the new status
+        }
+    } catch (err) {
+        console.error("Failed to update order", err);
+    }
+}

@@ -39,4 +39,50 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'login.html';
         }
     });
+
+    // 7. Fetch and Display User's Orders (The Notification System)
+    async function fetchMyOrders() {
+        const container = document.getElementById('orderContainer');
+        if (!container) return; // Safely skip if we aren't on the page with orders
+
+        try {
+            const response = await fetch('/api/orders');
+            const allOrders = await response.json();
+            
+            // Filter to show ONLY the orders belonging to the logged-in student
+            const myOrders = allOrders.filter(order => order.customerName === user.name);
+            
+            container.innerHTML = '';
+            
+            if (myOrders.length === 0) {
+                container.innerHTML = '<p class="text-muted mt-3">You have no orders yet.</p>';
+                return;
+            }
+
+            myOrders.forEach(order => {
+                // ✨ THE MAGIC NOTIFICATION HIGHLIGHT ✨
+                const isReady = order.status === 'Ready for Pickup';
+                const statusClass = isReady ? 'bg-success text-white shadow' : 'bg-light text-muted border';
+                const statusText = isReady ? '🚀 READY FOR PICKUP!' : order.status;
+
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="card mb-3 border-0 shadow-sm rounded-4">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-1 text-dark">${order.productName}</h6>
+                                <small class="text-muted">Qty: ${order.quantity} | Total: ₱${order.totalPrice}</small>
+                            </div>
+                            <span class="badge rounded-pill ${statusClass} px-3 py-2">
+                                ${statusText}
+                            </span>
+                        </div>
+                    </div>
+                `);
+            });
+        } catch (err) {
+            console.error("Failed to load orders", err);
+        }
+    }
+    
+    fetchMyOrders(); // Call it when the profile loads
 });

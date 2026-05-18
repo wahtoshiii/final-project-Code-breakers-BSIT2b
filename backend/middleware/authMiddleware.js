@@ -5,7 +5,7 @@ const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
-    // If no token is found, move on (treat them as a visitor)
+    // If no token is found, move on (treat them asx a visitor)
     if (!token) {
         req.user = null;
         return next();
